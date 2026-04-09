@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WinBites® — Performance Hand Pies</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@700;900&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red:       #cc3a35;
+    --red-dk:    #a02820;
+    --black:     #000002;
+    --gold:      #e5b058;
+    --gold-lt:   #f6db53;
+    --cream:     #FFF8EE;
+    --cream-dk:  #F5EDD8;
+    --grass:     #4CAF50;
+    --grass-dk:  #2E7031;
+    --sky:       #3A8FD4;
+    --sky-dk:    #1C5A9A;
+    --peanut:    #C07030;
+    --peanut-dk: #7A4010;
+    --white:     #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--black); font-family: 'Nunito', sans-serif; overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem; height: 68px;
+    background: var(--white); border-bottom: 3px solid var(--black);
+  }
+  .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+  .nav-logo-svg { height: 44px; width: auto; display: block; }
+  .nav-logo-badge {
+    font-size: 0.52rem; font-weight: 900; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--black); opacity: 0.5;
+    background: var(--gold-lt); border: 2px solid var(--black);
+    border-radius: 99px; padding: 0.15rem 0.55rem;
+    margin-left: 0.1rem;
+  }
+  .nav-links { display: flex; gap: 0; list-style: none; }
+  .nav-links li a {
+    display: block; font-size: 0.75rem; font-weight: 900; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--black); text-decoration: none;
+    padding: 0.5rem 1.2rem; border: 3px solid transparent; border-radius: 99px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .nav-links li a:hover { background: var(--gold-lt); border-color: var(--black); }
+  .nav-cta { background: var(--black) !important; color: var(--gold-lt) !important; border-color: var(--black) !important; }
+  .nav-cta:hover { background: var(--red) !important; border-color: var(--red) !important; color: white !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; padding-top: 68px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    position: relative; overflow: hidden;
+    background: var(--cream);
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(0,0,2,0.07) 2px, transparent 2px);
+    background-size: 30px 30px; pointer-events: none;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 4rem 4rem 4rem 5rem; position: relative; z-index: 2;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--gold-lt); border: 3px solid var(--black);
+    border-radius: 99px; padding: 0.35rem 1.1rem;
+    font-size: 0.7rem; font-weight: 900; letter-spacing: 3px;
+    text-transform: uppercase; width: fit-content; margin-bottom: 1.5rem;
+    box-shadow: 3px 3px 0 var(--black);
+    opacity: 0; animation: popIn 0.5s 0.1s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+
+  /* Hero logo — full SVG lockup */
+  .hero-logo-wrap {
+    opacity: 0; animation: slideUp 0.6s 0.25s ease forwards;
+    margin-bottom: 0.5rem;
+  }
+  .hero-logo-svg {
+    width: min(480px, 90%);
+    height: auto;
+    display: block;
+  }
+
+  .hero-tagline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 1.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.2rem;
+    text-shadow: 1px 1px 0 var(--red-dk);
+    opacity: 0; animation: slideUp 0.6s 0.35s ease forwards;
+  }
+  .hero-sub {
+    font-size: 1.05rem; font-weight: 600; line-height: 1.8;
+    max-width: 420px; margin-top: 1.5rem;
+    opacity: 0; animation: slideUp 0.6s 0.45s ease forwards;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; align-items: center; margin-top: 2.5rem;
+    opacity: 0; animation: slideUp 0.6s 0.58s ease forwards;
+  }
+  .btn {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; font-weight: 900;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 0.75rem 2.2rem; border-radius: 99px; border: 3px solid var(--black);
+    text-decoration: none; display: inline-block;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 4px 4px 0 var(--black);
+  }
+  .btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--black); }
+  .btn:active { transform: translate(1px,1px); box-shadow: 2px 2px 0 var(--black); }
+  .btn-primary { background: var(--red); color: white; }
+  .btn-secondary { background: white; color: var(--black); }
+
+  .hero-right {
+    display: flex; align-items: center; justify-content: center;
+    padding: 4rem 3rem; position: relative; z-index: 2;
+  }
+  .hero-pies { position: relative; width: 340px; height: 380px; }
+  .pie-circle {
+    position: absolute; width: 200px; height: 200px; border-radius: 50%;
+    border: 4px solid var(--black);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 1.5rem; box-shadow: 5px 5px 0 var(--black);
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1); cursor: default;
+  }
+  .pie-circle:hover { transform: scale(1.07) rotate(-2deg); }
+  .pie-circle.pregame  { background: #FFFAE8; top: 0; left: 0; animation: floatA 3.5s ease-in-out infinite; }
+  .pie-circle.ingame   { background: #EEF5FF; top: 80px; left: 120px; animation: floatB 4s ease-in-out infinite 0.5s; }
+  .pie-circle.postgame { background: #FFF3E8; top: 170px; left: 30px; animation: floatC 3.8s ease-in-out infinite 1s; }
+  .pie-emoji { font-size: 2.8rem; }
+  .pie-name  { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; margin-top: 0.4rem; line-height: 1.1; }
+  .pie-tag   { margin-top: 0.4rem; font-size: 0.55rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 99px; border: 2px solid var(--black); }
+  .pregame  .pie-tag { background: var(--grass); color: white; }
+  .ingame   .pie-tag { background: var(--sky); color: white; }
+  .postgame .pie-tag { background: var(--peanut); color: white; }
+
+  /* floating badge */
+  .hero-badge {
+    position: absolute; bottom: 3.5rem; left: 4.5rem;
+    width: 110px; height: 110px;
+    background: var(--red); border: 3px solid var(--black); border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; color: white; box-shadow: 4px 4px 0 var(--black);
+    animation: wobble 4s ease-in-out infinite;
+  }
+  .hero-badge-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 0.95rem; line-height: 1.2; letter-spacing: 1px; }
+  .hero-badge-sub  { font-size: 0.56rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin-top: 0.2rem; opacity: 0.85; }
+
+  /* ── MARQUEE ── */
+  .marquee-strip {
+    background: var(--black); color: var(--gold-lt);
+    padding: 0.9rem 0; border-top: 3px solid var(--black); border-bottom: 3px solid var(--black);
+    overflow: hidden; white-space: nowrap;
+  }
+  .marquee-inner { display: inline-block; animation: marquee 24s linear infinite; }
+  .marquee-inner span { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; padding: 0 2.5rem; }
+  .marquee-inner span.dot { color: var(--red); padding: 0 0.5rem; font-size: 1.5rem; }
+  .marquee-strip.reverse .marquee-inner { animation-direction: reverse; }
+
+  /* ── PRODUCTS ── */
+  .products { background: var(--cream); padding: 7rem 5rem; }
+  .products-header { text-align: center; margin-bottom: 3rem; }
+  .products-header h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(3rem,5vw,5rem); line-height: 0.95; letter-spacing: 1px; text-transform: uppercase; }
+  .products-header p  { font-size: 1rem; font-weight: 600; opacity: 0.6; margin-top: 1rem; max-width: 500px; margin-inline: auto; }
+
+  /* Timeline */
+  .game-timeline { display: flex; align-items: center; justify-content: center; margin-bottom: 2.5rem; }
+  .tl-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  .tl-bubble {
+    width: 68px; height: 68px; border-radius: 50%;
+    border: 3px solid var(--black); box-shadow: 3px 3px 0 var(--black);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 0.78rem; color: white;
+    line-height: 1.15; text-align: center; letter-spacing: 1px;
+  }
+  .tl-step.pre  .tl-bubble { background: var(--grass); }
+  .tl-step.mid  .tl-bubble { background: var(--sky); }
+  .tl-step.post .tl-bubble { background: var(--peanut); }
+  .tl-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--black); }
+  .tl-desc { font-size: 0.62rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; opacity: 0.4; }
+  .tl-arrow { font-size: 2rem; opacity: 0.2; flex-shrink: 0; padding: 0 0.25rem; margin-bottom: 1.8rem; }
+
+  /* Cards */
+  .product-cards {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    border: 3px solid var(--black); border-radius: 24px;
+    overflow: hidden; box-shadow: 8px 8px 0 var(--black);
+  }
+  .product-card { background: white; display: flex; flex-direction: column; transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1); cursor: pointer; }
+  .product-card + .product-card { border-left: 3px solid var(--black); }
+  .product-card:hover { transform: scale(1.025); z-index: 2; }
+
+  .card-moment-banner {
+    padding: 0.9rem 1.5rem 0.8rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 3px solid var(--black);
+  }
+  .card-pregame  .card-moment-banner { background: var(--grass); }
+  .card-ingame   .card-moment-banner { background: var(--sky); }
+  .card-postgame .card-moment-banner { background: var(--peanut); }
+  .card-moment-word { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.55rem; color: white; line-height: 1; letter-spacing: 1px; text-transform: uppercase; text-shadow: 2px 2px 0 rgba(0,0,0,0.2); }
+  .card-moment-when { font-size: 0.62rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.75); }
+
+  .product-card-top {
+    padding: 1.8rem 1.8rem 1.5rem;
+    display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1;
+  }
+  .card-pregame  .product-card-top { background: #FFFAE8; }
+  .card-ingame   .product-card-top { background: #EEF5FF; }
+  .card-postgame .product-card-top { background: #FFF3E8; }
+
+  .card-sport-badge {
+    font-size: 0.6rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+    padding: 0.3rem 0.8rem; border-radius: 99px; border: 2.5px solid var(--black);
+    margin-bottom: 1.2rem; align-self: flex-start; background: white;
+  }
+  .card-pregame  .card-sport-badge { color: var(--grass-dk); }
+  .card-ingame   .card-sport-badge { color: var(--sky-dk); }
+  .card-postgame .card-sport-badge { color: var(--peanut-dk); }
+
+  .card-icon-wrap {
+    width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--black);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.2rem; margin-bottom: 1.2rem; box-shadow: 4px 4px 0 var(--black); background: white;
+  }
+  .card-timing { font-size: 0.62rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; opacity: 0.38; margin-bottom: 0.3rem; }
+  .card-name   { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.8rem; line-height: 1; letter-spacing: 0.5px; }
+  .card-pregame  .card-name { color: var(--grass-dk); }
+  .card-ingame   .card-name { color: var(--sky-dk); }
+  .card-postgame .card-name { color: var(--peanut-dk); }
+  .card-tagline  { font-size: 0.82rem; font-style: italic; font-weight: 600; opacity: 0.5; margin-top: 0.4rem; }
+
+  .product-card-bottom { padding: 1.5rem 1.8rem; border-top: 3px solid var(--black); background: var(--cream); }
+  .card-benefits { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+  .card-benefits li { display: flex; align-items: center; gap: 0.7rem; font-size: 0.87rem; font-weight: 700; }
+  .benefit-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; border: 2px solid var(--black); }
+  .card-pregame  .benefit-dot { background: var(--grass); }
+  .card-ingame   .benefit-dot { background: var(--sky); }
+  .card-postgame .benefit-dot { background: var(--peanut); }
+
+  /* ── MANIFESTO ── */
+  .manifesto {
+    background: var(--red); border-top: 3px solid var(--black); border-bottom: 3px solid var(--black);
+    padding: 6rem 5rem; text-align: center; position: relative; overflow: hidden;
+  }
+  .manifesto::before {
+    content: 'W'; position: absolute; right: -1rem; top: -3rem;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: 28rem; color: rgba(0,0,0,0.07);
+    line-height: 1; pointer-events: none; user-select: none;
+  }
+  .manifesto h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; font-size: clamp(2.5rem,5vw,5rem); line-height: 1.05; color: white; position: relative; z-index: 1; text-shadow: 3px 3px 0 rgba(0,0,0,0.2); }
+  .manifesto p  { font-size: 1.1rem; font-weight: 600; color: rgba(255,255,255,0.8); margin-top: 1.5rem; position: relative; z-index: 1; }
+
+  /* ── ABOUT ── */
+  .about {
+    background: var(--gold); border-top: 3px solid var(--black); border-bottom: 3px solid var(--black);
+    padding: 7rem 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+  .about h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; font-size: clamp(2.8rem,5vw,5rem); line-height: 0.95; color: var(--black); margin-bottom: 1.5rem; }
+  .about p   { font-size: 1rem; font-weight: 600; line-height: 1.9; color: var(--black); opacity: 0.8; margin-bottom: 1rem; }
+
+  /* brand lineage callout */
+  .lineage-box {
+    background: var(--black); border: 3px solid var(--black); border-radius: 16px;
+    padding: 1.2rem 1.5rem; margin-top: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .lineage-jd2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 2rem; color: var(--gold-lt); flex-shrink: 0; }
+  .lineage-jd2 sup { font-size: 1rem; vertical-align: super; }
+  .lineage-text { font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.75); line-height: 1.6; }
+  .lineage-text strong { color: var(--gold-lt); }
+
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+  .stat-box { padding: 2.5rem 2rem; border: 3px solid var(--black); }
+  .stat-box:nth-child(1) { background: var(--black); border-radius: 20px 0 0 0; }
+  .stat-box:nth-child(2) { background: var(--red); border-radius: 0 20px 0 0; }
+  .stat-box:nth-child(3) { background: var(--grass); border-radius: 0 0 0 20px; }
+  .stat-box:nth-child(4) { background: var(--sky); border-radius: 0 0 20px 0; }
+  .stat-num   { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 3.5rem; line-height: 1; color: white; }
+  .stat-box:nth-child(1) .stat-num { color: var(--gold-lt); }
+  .stat-label { font-size: 0.75rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.8); margin-top: 0.4rem; }
+  .stat-box:nth-child(1) .stat-label { color: rgba(255,255,255,0.5); }
+
+  /* ── PHILOSOPHY ── */
+  .philosophy { background: var(--cream-dk); border-bottom: 3px solid var(--black); padding: 7rem 5rem; }
+  .philosophy h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; font-size: clamp(3rem,5vw,5rem); line-height: 0.95; margin-bottom: 3rem; }
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+  .pillar { background: white; border: 3px solid var(--black); padding: 2.5rem 2rem; transition: background 0.2s, transform 0.2s; cursor: default; }
+  .pillar:nth-child(1) { border-radius: 20px 0 0 0; }
+  .pillar:nth-child(2) { border-radius: 0 20px 0 0; }
+  .pillar:nth-child(3) { border-radius: 0 0 0 20px; }
+  .pillar:nth-child(4) { border-radius: 0 0 20px 0; }
+  .pillar:hover { background: var(--gold-lt); transform: scale(1.01); }
+  .pillar-num  { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 3rem; line-height: 1; color: var(--gold); -webkit-text-stroke: 2px var(--black); }
+  .pillar:hover .pillar-num { color: var(--red); }
+  .pillar-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--black); margin: 0.5rem 0 0.8rem; letter-spacing: 0.5px; }
+  .pillar-desc { font-size: 0.9rem; font-weight: 600; line-height: 1.75; opacity: 0.7; }
+
+
+  /* ── EMAIL CAPTURE ── */
+  .email-capture {
+    background: var(--black); border-top: 3px solid var(--black);
+    padding: 5rem 5rem; text-align: center; position: relative; overflow: hidden;
+  }
+  .email-capture::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(229,176,88,0.08) 2px, transparent 2px);
+    background-size: 28px 28px; pointer-events: none;
+  }
+  .email-capture-inner { position: relative; z-index: 1; max-width: 580px; margin: 0 auto; }
+  .email-capture h2 {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: clamp(2.2rem,4vw,3.5rem); text-transform: uppercase; letter-spacing: 1px;
+    color: var(--white); line-height: 1.05; margin-bottom: 0.6rem;
+  }
+  .email-capture h2 span { color: var(--gold-lt); }
+  .email-capture p {
+    font-size: 1rem; font-weight: 600; color: rgba(255,255,255,0.55);
+    line-height: 1.7; margin-bottom: 2rem;
+  }
+  .email-form { display: flex; gap: 0; max-width: 480px; margin: 0 auto; }
+  .email-form input[type="email"] {
+    flex: 1; padding: 0.85rem 1.4rem;
+    font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 600;
+    border: 3px solid var(--gold); border-right: none;
+    border-radius: 99px 0 0 99px; background: rgba(255,255,255,0.06);
+    color: white; outline: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .email-form input[type="email"]::placeholder { color: rgba(255,255,255,0.3); }
+  .email-form input[type="email"]:focus { background: rgba(255,255,255,0.1); border-color: var(--gold-lt); }
+  .email-form button {
+    padding: 0.85rem 1.8rem;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 900;
+    letter-spacing: 2px; text-transform: uppercase;
+    background: var(--red); color: white;
+    border: 3px solid var(--gold); border-radius: 0 99px 99px 0;
+    cursor: pointer; transition: background 0.15s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .email-form button:hover { background: var(--red-dk); }
+  .email-form button:active { transform: scale(0.97); }
+  .email-success {
+    display: none; margin-top: 1rem;
+    font-size: 0.85rem; font-weight: 700; color: var(--gold-lt);
+    letter-spacing: 1px;
+  }
+  .email-fine-print {
+    margin-top: 1.2rem; font-size: 0.7rem; color: rgba(255,255,255,0.25); font-weight: 600;
+  }
+  @media (max-width: 900px) {
+    .email-capture { padding: 4rem 1.5rem; }
+    .email-form { flex-direction: column; gap: 0.75rem; }
+    .email-form input[type="email"] { border-right: 3px solid var(--gold); border-radius: 99px; }
+    .email-form button { border-radius: 99px; }
+  }
+
+  /* ── FOOTER ── */
+  footer { background: var(--black); padding: 5rem 5rem 3rem; }
+  .footer-top {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem;
+    padding-bottom: 3rem; border-bottom: 3px solid rgba(255,255,255,0.1);
+  }
+  .footer-brand { display: flex; flex-direction: column; gap: 0.4rem; }
+  .footer-logo-svg { height: 52px; width: auto; margin-bottom: 0.3rem; filter: brightness(0) invert(1); opacity: 0.9; }
+  .footer-tagline  { font-size: 0.65rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-lt); margin-top: 0.2rem; opacity: 0.7; }
+  .footer-parent   { font-size: 0.7rem; font-weight: 700; color: rgba(255,255,255,0.22); margin-top: 0.5rem; }
+  .footer-parent span { color: var(--gold-lt); opacity: 0.65; }
+  .footer-col h4 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.2rem; letter-spacing: 1px; color: var(--gold); margin-bottom: 1.2rem; }
+  .footer-col a  { display: block; font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.45); text-decoration: none; margin-bottom: 0.6rem; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--gold-lt); }
+  .footer-bottom { padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.2); }
+  .footer-tm   { font-size: 0.68rem; color: rgba(255,255,255,0.2); text-align: right; line-height: 1.9; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes slideUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes popIn   { from { opacity:0; transform:scale(0.7); } to { opacity:1; transform:scale(1); } }
+  @keyframes floatA  { 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-12px) rotate(2deg);} }
+  @keyframes floatB  { 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-10px) rotate(-2deg);} }
+  @keyframes floatC  { 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-14px) rotate(1deg);} }
+  @keyframes wobble  { 0%,100%{transform:rotate(-3deg);} 50%{transform:rotate(3deg);} }
+  @keyframes marquee { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 0 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 3rem 1.5rem 2rem; }
+    .hero-right { padding: 1rem 1.5rem 3rem; justify-content: flex-start; }
+    .hero-badge { left: auto; right: 1.5rem; bottom: 1.5rem; }
+    .hero-pies { width: 100%; height: 260px; }
+    .pie-circle { width: 150px; height: 150px; }
+    .pie-circle.ingame   { left: 90px; top: 60px; }
+    .pie-circle.postgame { left: 20px; top: 130px; }
+    .products { padding: 4rem 1.5rem; }
+    .product-cards { grid-template-columns: 1fr; border-radius: 20px; }
+    .product-card + .product-card { border-left: none; border-top: 3px solid var(--black); }
+    .game-timeline { gap: 0.25rem; }
+    .tl-arrow { font-size: 1.2rem; }
+    .manifesto { padding: 4rem 1.5rem; }
+    .about { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
+    .philosophy { padding: 4rem 1.5rem; }
+    .pillars { grid-template-columns: 1fr; }
+    .pillar { border-radius: 16px !important; }
+    footer { padding: 3rem 1.5rem 2rem; }
+    .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    .footer-tm { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="logo.svg" class="nav-logo-svg" alt="WinBites">
+    <span class="nav-logo-badge">a JD² brand</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#why">Why WinBites</a></li>
+    <li><a href="#notify" class="nav-cta">Get Notified</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">🏆 Performance Hand Pies</div>
+
+    <div class="hero-logo-wrap">
+      <img src="logo.svg" class="hero-logo-svg" alt="WinBites">
+    </div>
+
+    <div class="hero-tagline">Feed the Athlete.</div>
+    <p class="hero-sub">
+      Three handheld pies tuned for every phase of your game. Pregame. In-Game. Postgame. Built by two JDs who were tired of eating candy bars on the bench.
+    </p>
+    <div class="hero-actions">
+      <a href="#products" class="btn btn-primary">See the Pies</a>
+      <a href="#about" class="btn btn-secondary">Our Story</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-badge">
+      <div class="hero-badge-text">Real<br>Food.</div>
+      <div class="hero-badge-sub">Real Fuel</div>
+    </div>
+    <div class="hero-pies">
+      <div class="pie-circle pregame">
+        <div class="pie-emoji">🍌</div>
+        <div class="pie-name">Banana<br>Pudding</div>
+        <div class="pie-tag">Pregame</div>
+      </div>
+      <div class="pie-circle ingame">
+        <div class="pie-emoji">🍎</div>
+        <div class="pie-name">The Big<br>Apple</div>
+        <div class="pie-tag">In-Game</div>
+      </div>
+      <div class="pie-circle postgame">
+        <div class="pie-emoji">🥜</div>
+        <div class="pie-name">Texas<br>PB</div>
+        <div class="pie-tag">Postgame</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>Banana Pudding</span><span class="dot">●</span>
+    <span>The Big Apple</span><span class="dot">●</span>
+    <span>Texas PB</span><span class="dot">●</span>
+    <span>High Protein</span><span class="dot">●</span>
+    <span>Electrolytes</span><span class="dot">●</span>
+    <span>High Potassium</span><span class="dot">●</span>
+    <span>Pregame</span><span class="dot">●</span>
+    <span>In-Game</span><span class="dot">●</span>
+    <span>Postgame</span><span class="dot">●</span>
+    <span>Banana Pudding</span><span class="dot">●</span>
+    <span>The Big Apple</span><span class="dot">●</span>
+    <span>Texas PB</span><span class="dot">●</span>
+    <span>High Protein</span><span class="dot">●</span>
+    <span>Electrolytes</span><span class="dot">●</span>
+    <span>High Potassium</span><span class="dot">●</span>
+    <span>Pregame</span><span class="dot">●</span>
+    <span>In-Game</span><span class="dot">●</span>
+    <span>Postgame</span><span class="dot">●</span>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="products-header">
+    <h2>The Full Lineup.</h2>
+    <p>One pie for every phase of your game — engineered for the exact moment you need it.</p>
+  </div>
+
+  <div class="game-timeline">
+    <div class="tl-step pre">
+      <div class="tl-bubble">PRE<br>GAME</div>
+      <div class="tl-name">Pregame</div>
+      <div class="tl-desc">Load up</div>
+    </div>
+    <div class="tl-arrow">→</div>
+    <div class="tl-step mid">
+      <div class="tl-bubble">IN<br>GAME</div>
+      <div class="tl-name">In-Game</div>
+      <div class="tl-desc">Stay sharp</div>
+    </div>
+    <div class="tl-arrow">→</div>
+    <div class="tl-step post">
+      <div class="tl-bubble">POST<br>GAME</div>
+      <div class="tl-name">Postgame</div>
+      <div class="tl-desc">Recover</div>
+    </div>
+  </div>
+
+  <div class="product-cards">
+
+    <div class="product-card card-pregame">
+      <div class="card-moment-banner">
+        <div class="card-moment-word">Pregame</div>
+        <div class="card-moment-when">Before the game</div>
+      </div>
+      <div class="product-card-top">
+        <span class="card-sport-badge">⚾ Baseball</span>
+        <div class="card-icon-wrap">🍌</div>
+        <div class="card-timing">Before the first pitch</div>
+        <div class="card-name">Banana Pudding</div>
+        <div class="card-tagline">"America's Favorite Pastime"</div>
+      </div>
+      <div class="product-card-bottom">
+        <ul class="card-benefits">
+          <li><div class="benefit-dot"></div>High potassium to prime your muscles</li>
+          <li><div class="benefit-dot"></div>Complex carbs for sustained energy</li>
+          <li><div class="benefit-dot"></div>Natural sugars — no spike-and-crash</li>
+          <li><div class="benefit-dot"></div>Banana pudding filling, actually delicious</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="product-card card-ingame">
+      <div class="card-moment-banner">
+        <div class="card-moment-word">In-Game</div>
+        <div class="card-moment-when">During the action</div>
+      </div>
+      <div class="product-card-top">
+        <span class="card-sport-badge">🏀 Basketball</span>
+        <div class="card-icon-wrap">🍎</div>
+        <div class="card-timing">Between quarters</div>
+        <div class="card-name">The Big Apple</div>
+        <div class="card-tagline">"Big city energy in every bite"</div>
+      </div>
+      <div class="product-card-bottom">
+        <ul class="card-benefits">
+          <li><div class="benefit-dot"></div>Electrolyte-infused for hydration</li>
+          <li><div class="benefit-dot"></div>Fast-acting sugars — instant fuel</li>
+          <li><div class="benefit-dot"></div>Apple hand pie filling, not a bar</li>
+          <li><div class="benefit-dot"></div>Made to eat in 60 seconds flat</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="product-card card-postgame">
+      <div class="card-moment-banner">
+        <div class="card-moment-word">Postgame</div>
+        <div class="card-moment-when">After the final whistle</div>
+      </div>
+      <div class="product-card-top">
+        <span class="card-sport-badge">🏈 Football</span>
+        <div class="card-icon-wrap">🥜</div>
+        <div class="card-timing">After the final whistle</div>
+        <div class="card-name">Texas PB</div>
+        <div class="card-tagline">"Everything's Bigger in Texas"</div>
+      </div>
+      <div class="product-card-bottom">
+        <ul class="card-benefits">
+          <li><div class="benefit-dot"></div>High protein for muscle recovery</li>
+          <li><div class="benefit-dot"></div>High calorie — you earned it</li>
+          <li><div class="benefit-dot"></div>Peanut butter filling, rich and dense</li>
+          <li><div class="benefit-dot"></div>Keeps you full through recovery</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<div class="manifesto">
+  <h2>Athletes deserve food<br>that works as hard as they do.</h2>
+  <p>No junk. No compromise. Just a WinBite for every moment.</p>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div>
+    <h2>Two JDs.<br>One Big<br>Win.</h2>
+    <p>
+      <strong>WinBites started the way the best ideas do — between two best friends who both happened to be named JD.</strong> We met in middle school, grew up obsessed with food and sports, and took that obsession with us to college.
+    </p>
+    <p>
+      One day between classes, we looked at what was in the snack aisle and asked: why doesn't anyone make a handheld pie that actually fuels you for game time? So we built one. Then three. Each one engineered for a different moment in your athletic day.
+    </p>
+    <p>
+      WinBites is our first product line — built under our parent brand JD², named for the two of us.
+    </p>
+    <div class="lineage-box">
+      <div class="lineage-jd2">JD<sup>2</sup></div>
+      <div class="lineage-text">
+        WinBites is a <strong>JD² brand</strong> — named for two founders, both JD, who believed athletes deserved better food.
+      </div>
+    </div>
+  </div>
+  <div class="about-stats">
+    <div class="stat-box">
+      <div class="stat-num">2</div>
+      <div class="stat-label">JDs. One Vision.</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">3</div>
+      <div class="stat-label">SKUs at Launch</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Compromises</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">More Drops Coming</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE 2 -->
+<div class="marquee-strip reverse">
+  <div class="marquee-inner">
+    <span>Feed the Athlete</span><span class="dot">★</span>
+    <span>Moment-Matched Nutrition</span><span class="dot">★</span>
+    <span>WinBites — a JD² Brand</span><span class="dot">★</span>
+    <span>Built by Athletes</span><span class="dot">★</span>
+    <span>Two JDs. One Mission.</span><span class="dot">★</span>
+    <span>Feed the Athlete</span><span class="dot">★</span>
+    <span>Moment-Matched Nutrition</span><span class="dot">★</span>
+    <span>WinBites — a JD² Brand</span><span class="dot">★</span>
+    <span>Built by Athletes</span><span class="dot">★</span>
+    <span>Two JDs. One Mission.</span><span class="dot">★</span>
+  </div>
+</div>
+
+<!-- WHY WINBITES -->
+<section class="philosophy" id="why">
+  <h2>Why WinBites Works.</h2>
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-num">01</div>
+      <div class="pillar-name">Moment-Matched</div>
+      <p class="pillar-desc">Pre, in, and post-game aren't the same moment. Your food shouldn't be either. Every WinBite is timed and tuned — potassium before, electrolytes during, protein after.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">02</div>
+      <div class="pillar-name">Real Flavors. Real Function.</div>
+      <p class="pillar-desc">Banana pudding, apple pie, peanut butter. Not flavoring — actual filling. The kind of food you'd eat anyway, engineered to do a job at game time.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">03</div>
+      <div class="pillar-name">Handheld. Always.</div>
+      <p class="pillar-desc">A sealed hand pie you can eat between drills, in the locker room, or sprinting to your next class. No bowls, no prep, no excuses. Performance food that fits your pace.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">04</div>
+      <div class="pillar-name">Sport-Coded by Design</div>
+      <p class="pillar-desc">Every SKU is tied to a sport and a moment in that sport. A baseball player warming up and a football lineman cooling down have completely different needs — and now, completely different pies.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EMAIL CAPTURE -->
+<section class="email-capture" id="notify">
+  <div class="email-capture-inner">
+    <h2>Be First to <span>Win.</span></h2>
+    <p>WinBites is coming to northern NJ farmers markets this summer. Drop your email and you'll be the first to know when and where we're selling — plus early access to our launch.</p>
+    <div class="email-form" id="emailForm">
+      <input type="email" id="emailInput" placeholder="your@email.com" autocomplete="email">
+      <button type="button" onclick="handleEmailSubmit()">Notify Me</button>
+    </div>
+    <div class="email-success" id="emailSuccess">✓ &nbsp;You're on the list. We'll see you at the market.</div>
+    <p class="email-fine-print">No spam. Just launch updates and market dates. Unsubscribe anytime.</p>
+  </div>
+</section>
+
+<script>
+function handleEmailSubmit() {
+  const input = document.getElementById('emailInput');
+  const form = document.getElementById('emailForm');
+  const success = document.getElementById('emailSuccess');
+  const email = input.value.trim();
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    input.style.borderColor = '#cc3a35';
+    input.focus();
+    return;
+  }
+  // Store in localStorage as a simple local list (replace with Mailchimp/ConvertKit later)
+  const list = JSON.parse(localStorage.getItem('wb_emails') || '[]');
+  if (!list.includes(email)) list.push(email);
+  localStorage.setItem('wb_emails', JSON.stringify(list));
+  form.style.display = 'none';
+  success.style.display = 'block';
+}
+</script>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img src="logo.svg" class="footer-logo-svg" alt="WinBites">
+      <div class="footer-tagline">Feed the Athlete</div>
+      <div class="footer-parent">A <span>JD²</span> brand · winbites.com</div>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <a href="#products">Banana Pudding — Pregame</a>
+      <a href="#products">The Big Apple — In-Game</a>
+      <a href="#products">Texas PB — Postgame</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#about">Our Story</a>
+      <a href="#why">Why WinBites</a>
+      <a href="mailto:hello@winbites.com">hello@winbites.com</a>
+      <a href="#">Get Early Access</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 WinBites® · A JD² Foods Brand · All rights reserved.</div>
+    <div class="footer-tm">
+      WinBites® trademark pending registration (USPTO Class 030).<br>
+      JD² is a registered brand of JD² Foods, LLC.<br>
+      Fonts: Barlow Condensed + Nunito via Google Fonts (OFL License).
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
